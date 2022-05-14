@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{% static 'vendor/css/bootstrap.min.css' %}"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="{% static 'css/card.css' %}" type="text/css" />
+    <title>News Aggregator</title>
+  </head>
+  <body>
+    {% include 'navbar.htm' %} {% block content %} {% endblock %}
+
+    <footer
+      class="d-flex justify-content-center p-5 fw-light bg-dark text-white"
+    >
+      &copy; 2022 copyright All rights Reserved. R News
+    </footer>
+
+    <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

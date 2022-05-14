@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+<h3 class="text-center mb-3">Search result for {{ searched|title }}</h3>
+
+{% if searched is not None %} {% for data in filter_search %}
+<div class="mx-4">
+  <a href="{{ data.url }}" target="_blank" class="text-decoration-none"
+    ><h5>{{ data }}</h5></a
+  >
+  <hr />
+</div>
+{% empty %}
+<h3 class="text-center fs-5 mt-5">Oops! No result found for {{ searched }}</h3>
+{% endfor %} {% endif %} {% endblock %}

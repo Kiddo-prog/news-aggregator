@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home-page' %}">R News</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse nav justify-content-end"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <a
+          class="nav-link active"
+          aria-current="page"
+          href="{% url 'home-page' %}"
+          >Home</a
+        >
+        <form
+          class="form-inline my-2 my-lg-0"
+          action="{% url 'search-view' %}"
+          method="POST"
+        >
+          {% csrf_token %}
+          <input
+            class="form-control mr-sm-2"
+            name="search"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>

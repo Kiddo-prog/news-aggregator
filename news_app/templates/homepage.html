@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <h1>{{ news_list.name }}</h1>
+    {% for item in news_list %}
+    <div class="col-lg-4 col-sm-6 col-xsm-4">
+      <!-- <img src="{{ item.image }}" class="card-img-top" /> -->
+      <div class="card mb-3">
+        <div class="card-body card container-card">
+          <h5 class="card-title text-dark fw-bold">{{ item.title|title }}</h5>
+          <h6 class="fw-bold">
+            <i class="text-muted">Source: </i>{{ item.name }}
+          </h6>
+          <p>
+            Date:
+            <span class="text-muted">{{ item.pub_date|date:" D d M Y" }}</span>
+          </p>
+          <a
+            href="{{ item.url }}"
+            target="_blank"
+            class="text-capitalise btn btn-primary"
+            >Read More</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-flex justify-content-center pagination my-3">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+      <a href="?page=1" class="btn btn-danger">&laquo; first</a>
+      <a
+        href="?page={{ page_obj.previous_page_number }}"
+        class="btn btn-primary"
+        >prev</a
+      >
+      {% endif %}
+      <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary"
+        >next</a
+      >
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-danger"
+        >last &raquo;</a
+      >
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+{% endblock %}

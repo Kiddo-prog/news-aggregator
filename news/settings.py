@@ -13,24 +13,23 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from ensurepip import version
 from pathlib import Path
 import os
-import environ
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "news_app",
     "django_apscheduler",
-    "contact_form",
     "crispy_forms",
     # "anymail",
 ]
@@ -57,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "news.urls"
@@ -83,12 +82,17 @@ WSGI_APPLICATION = "news.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+DATABASES = {} 
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
 
 
 # Password validation
@@ -126,12 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "static/vendor"),
-    os.path.join(BASE_DIR, "static/images"),
-    os.path.join(BASE_DIR, "static/css"),
+    os.path.join(BASE_DIR, "static/"),
 ]
 
 MEDIA_URL = "/media/"
@@ -160,3 +161,5 @@ ANYMAIL = {
 SENDINBLUE_API_URL = "https://api.sendinblue.com/v3/"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

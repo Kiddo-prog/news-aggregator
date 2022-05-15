@@ -1,5 +1,3 @@
-from email import message
-from email.errors import MessageError
 from django.db import models
 from django.utils import timezone
 

@@ -29,7 +29,7 @@ def save_new_articles(feed):
                 description=item.description,
                 pub_date=parser.parse(item.published),
                 url=item.link,
-                image=item.img,
+                image=item.img['src'],
                 guid=item.guid,
             )
             article.save()

@@ -4,7 +4,7 @@
     <h1>{{ news_list.name }}</h1>
     {% for item in news_list %}
     <div class="col-lg-4 col-sm-6 col-xsm-4">
-      <!-- <img src="{{ item.image }}" class="card-img-top" /> -->
+      <img src="{{ item.image }}" class="card-img-top" />
       <div class="card mb-3">
         <div class="card-body card container-card">
           <h5 class="card-title text-dark fw-bold">{{ item.title|title }}</h5>

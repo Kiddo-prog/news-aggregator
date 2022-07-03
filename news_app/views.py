@@ -49,8 +49,8 @@ def success_page(request):
 
 
 def search_view(request):
-    if request.method == "POST":
-        searched = request.POST["search"]
+    if request.method == "GET":
+        searched = request.GET["news"]
         filter_search = Article.objects.filter(title__contains=searched)
         context = {
         'filter_search': filter_search, 

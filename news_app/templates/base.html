@@ -14,7 +14,10 @@
     <title>News Aggregator</title>
   </head>
   <body>
-    {% include 'navbar.htm' %} {% block content %} {% endblock %}
+    {% include 'navbar.htm' %} 
+    <div class="mt-5">
+      {%  block content %} {% endblock %}
+    </div>
 
     <footer
       class="d-flex justify-content-center p-5 fw-light bg-dark text-white"

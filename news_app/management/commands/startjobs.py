@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 def save_new_articles(feed):
     news_title = feed.channel.title
-    news_image = feed.channel.image["href"]
+    # news_image = feed.channel.image["href"]
     for item in feed.entries:
         if not Article.objects.filter(guid=item.guid).exists():
             article = Article(
@@ -29,7 +29,7 @@ def save_new_articles(feed):
                 description=item.description,
                 pub_date=parser.parse(item.published),
                 url=item.link,
-                image=news_image,
+                image=item.img,
                 guid=item.guid,
             )
             article.save()
@@ -46,11 +46,15 @@ def save_cbs_world_news_articles():
     _feed = feedparser.parse("https://www.cbsnews.com/latest/rss/world")
     save_new_articles(_feed)
 
+def save_google_new_feed():
+    _feed = feedparser.parse("https://news.google.com/rss?hl=en-NG&gl=NG&ceid=NG%3Aen&oc=11")
+    save_new_articles(_feed)
 
 def save_247_news_around_the_world_articles():
     _feed = feedparser.parse("https://247newsaroundtheworld.com/feed/")
     save_new_articles(_feed)
 
+# def save_
 
 def delete_old_job_executions(max_age=604_800):
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
@@ -88,6 +92,16 @@ class Command(BaseCommand):
         # Scheduler for cbs feeds
         scheduler.add_job(
             save_cbs_world_news_articles,
+            trigger="interval",
+            max_instances=2,
+            minutes=10,
+            id="CBS Times",
+            replace_existing=True,
+        )
+        logger.info("Added job 'CBS Times'.")
+
+        scheduler.add_job(
+            save_google_new_feed,
             trigger="interval",
             max_instances=2,
             minutes=10,
